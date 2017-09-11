@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+
+  apache2:
+    image: httpd:2.4-alpine
+    ports:
+     - "80:80"
+    volumes:
+     - ./apache2/sites-enabled:/etc/apache2/sites-enabled
+     - ./workspace/htdocs:/usr/local/apache2/htdocs/
+
+  schemaspy:
+      build:
+        context: ./schemaspy_build
+        args:
+          - PROXY=$PROXY
+      env_file:
+        - variables_de_entorno.env
+      volumes:
+          - ./workspace/htdocs/schemaspy:/output
